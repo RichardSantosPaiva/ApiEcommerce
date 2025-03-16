@@ -1,42 +1,28 @@
 ﻿using ApiEcommerce.Models;
+using ApiEcommerce.Repository;
 
 namespace ApiEcommerce.Services
 {
     public class ProdutoService : IProdutoService
     {
-        /*
-        private readonly IProdutoRepository _produtoRepository;
 
-        public ProdutoService(IProdutoRepository produtoRepository)
+        private readonly IRepository _produtoRepository;
+
+        public ProdutoService(IRepository produtoRepository)
         {
             _produtoRepository = produtoRepository;
         }
 
-        */
-
-        public async Task<IEnumerable<Produto>> FindAll()
+        public async Task<IEnumerable<Products>> FindAll()
         {
-            var criarProdutos = await CriarProduto();
-            return criarProdutos;
+            return await _produtoRepository.FindAll();
         }
 
-        public async Task<List<Produto>> CriarProduto()
+        public async Task<Products> Create(Products produto)
         {
-            List<Produto> listaProduto = new List<Produto>();
-            
-            for (int i = 0; i < 10;  i++)
-            {
-                Produto objProduto = new Produto();
-
-                objProduto.Id = i;
-                objProduto.nomeProduto = "Nome Produto" + i;
-                objProduto.descricao = "descrição" + i;
-                objProduto.imgURL = "url" + i;
-
-                 listaProduto.Add(objProduto);
-            }
-
-            return await Task.FromResult(listaProduto); ;
+           return await _produtoRepository.Create(produto);
         }
+
+       
     }
 }

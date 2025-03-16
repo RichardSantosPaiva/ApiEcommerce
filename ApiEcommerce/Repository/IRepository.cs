@@ -1,8 +1,8 @@
 ﻿using ApiEcommerce.Models;
 
-namespace ApiEcommerce.Services
+namespace ApiEcommerce.Repository
 {
-    public interface IProdutoService
+    public interface IRepository
     {
         Task<IEnumerable<Products>> FindAll();
         Task<Products> Create(Products produto);
