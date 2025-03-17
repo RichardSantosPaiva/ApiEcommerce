@@ -1,15 +1,18 @@
 ﻿using ApiEcommerce.Models;
 using ApiEcommerce.Services;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 namespace ApiEcommerce.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
     public class ProductsController : ControllerBase
-    {   
-        private readonly IProdutoService _productService;
-        public ProductsController(IProdutoService produtoService) { 
+    {
+        private readonly IProductService _productService;
+
+        public ProductsController(IProductService produtoService)
+        {
             _productService = produtoService;
         }
 
@@ -20,12 +23,11 @@ namespace ApiEcommerce.Controllers
         }
 
         [HttpPost]
-
-        public async Task<ActionResult<Products>> Create([FromBody] Products produto)
+        public async Task<ActionResult<Products>> Create([FromForm] Products product)
         {
-            Products product = await _productService.Create(produto);
-             return CreatedAtAction(nameof(FindAll), new { id = produto.Id }, produto);
-        }
+            var createdProduct = await _productService.Create(product);
 
+            return CreatedAtAction(nameof(FindAll), new { id = createdProduct.Id }, createdProduct);
+        }
     }
 }

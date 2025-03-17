@@ -2,7 +2,7 @@
 
 namespace ApiEcommerce.Services
 {
-    public interface IProdutoService
+    public interface IProductService
     {
         Task<IEnumerable<Products>> FindAll();
         Task<Products> Create(Products produto);

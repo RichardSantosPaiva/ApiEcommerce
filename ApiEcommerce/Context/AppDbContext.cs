@@ -9,6 +9,8 @@ namespace ApiEcommerce.Context
             : base(options) { }
 
         public DbSet<Products> Produtos { get; set; }
+        
+
 
     }
 }

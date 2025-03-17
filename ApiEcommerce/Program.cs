@@ -3,6 +3,7 @@ using ApiEcommerce.Repository;
 using ApiEcommerce.Services;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.FileProviders;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -18,7 +19,11 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddScoped<IRepository, Repository>();
-builder.Services.AddScoped<IProdutoService, ProdutoService>();
+builder.Services.AddScoped<IProductService, ProductService>();
+builder.Services.AddTransient<IFileService, FileService>();
+
+string staticFilesPath = builder.Configuration["Directories:StaticFilesPath"];
+
 
 var app = builder.Build();
 
@@ -38,6 +43,16 @@ if (app.Environment.IsDevelopment())
 app.UseHttpsRedirection();
 
 app.UseAuthorization();
+
+app.Use((context, next) =>
+{
+    if (context.Request.Path.Value.EndsWith("/", StringComparison.OrdinalIgnoreCase))
+    {
+        context.Request.Path = context.Request.Path.Value.TrimEnd('/');
+    }
+    return next();
+});
+app.UseStaticFiles();
 
 app.MapControllers();
 
